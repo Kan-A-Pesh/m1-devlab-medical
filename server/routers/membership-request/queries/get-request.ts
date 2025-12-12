@@ -14,6 +14,11 @@ export const getMembershipRequest = medicalStaffProcedure
       });
     }
 
+    console.log("[getMembershipRequest] Looking for request:", {
+      requestId: input.id,
+      medicalCompanyId: context.medicalCompany.id,
+    });
+
     const request = await database.query.membershipRequestsTable.findFirst({
       where: and(
         eq(membershipRequestsTable.id, input.id),
@@ -31,6 +36,8 @@ export const getMembershipRequest = medicalStaffProcedure
         },
       },
     });
+
+    console.log("[getMembershipRequest] Found:", request ? "yes" : "no");
 
     if (!request) {
       throw new ORPCError("NOT_FOUND", {

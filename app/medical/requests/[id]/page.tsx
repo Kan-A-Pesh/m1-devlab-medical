@@ -29,7 +29,7 @@ export default function MedicalRequestDetailPage() {
   const requestId = parseInt(params.id as string);
 
   const requestQuery = useQuery(
-    orpc.membershipRequest.get.queryOptions({
+    orpc.membershipRequest.getById.queryOptions({
       input: { id: requestId },
     })
   );

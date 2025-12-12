@@ -2,7 +2,7 @@ import { z } from "zod";
 import { medicalStaffProcedure } from "@/server/middleware/roles";
 import { database } from "@/db";
 import { membershipRequestsTable } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { ORPCError } from "@orpc/server";
 
 export const listMembershipRequests = medicalStaffProcedure
@@ -20,10 +20,13 @@ export const listMembershipRequests = medicalStaffProcedure
       });
     }
 
+    const baseCondition = eq(membershipRequestsTable.medicalCompanyId, context.medicalCompany.id);
+    const whereCondition = input.status
+      ? and(baseCondition, eq(membershipRequestsTable.status, input.status))
+      : baseCondition;
+
     const requests = await database.query.membershipRequestsTable.findMany({
-      where: input.status
-        ? eq(membershipRequestsTable.status, input.status)
-        : eq(membershipRequestsTable.medicalCompanyId, context.medicalCompany.id),
+      where: whereCondition,
       with: {
         clientCompany: true,
       },

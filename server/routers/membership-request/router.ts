@@ -10,7 +10,7 @@ export const membershipRequestRouter = {
   dismiss: dismissMembershipRequest,
   respond: respondToMembershipRequest,
   list: listMembershipRequests,
-  get: getMembershipRequest,
+  getById: getMembershipRequest,
   getMy: getMyMembershipRequest,
 };
 
