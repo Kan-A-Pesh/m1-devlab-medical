@@ -31,6 +31,13 @@ This is a Next.js 16 application for managing medical appointments and employee 
   - `auth-client.ts` - Better Auth client configuration
   - `utils.ts` - Utility functions (cn helper for className merging)
 
+- **`server/`** - Backend oRPC procedures
+  - `orpc.ts` - oRPC instance export
+  - `router.ts` - Master router combining all feature routers
+  - `routers/` - Feature-based router folders
+    - Each feature has `queries/` and `mutations/` subfolders
+    - One file per procedure
+
 ## Technology Stack
 
 ### Core Framework
@@ -75,10 +82,19 @@ This is a Next.js 16 application for managing medical appointments and employee 
   - Components: `components/ui/`
   - Documentation: https://ui.shadcn.com/docs
 
+### Backend RPC
+- **oRPC** - Type-safe RPC with OpenAPI
+  - Server: `@orpc/server`
+  - Client: `@orpc/client`
+  - Master router: `server/router.ts`
+  - Documentation: https://orpc.dev/docs
+  - See: `.cursor/rules/orpc.mdc` for usage guidelines
+
 ### Utilities
 - **class-variance-authority** - Component variant management
 - **clsx** & **tailwind-merge** - className utilities
 - **lucide-react** - Icon library
+- **zod** - Schema validation (used with oRPC)
 
 ## Available Scripts
 
@@ -138,6 +154,8 @@ Required:
 - **Next.js**: https://nextjs.org/docs
 - **Better Auth**: Use Better Auth MCP tools for documentation
 - **Drizzle ORM**: https://orm.drizzle.team/docs/overview
+- **oRPC**: https://orpc.dev/docs
+- **Zod**: https://zod.dev
 - **Tailwind CSS**: https://tailwindcss.com/docs
 - **shadcn/ui**: https://ui.shadcn.com/docs
 - **React**: https://react.dev

@@ -1,0 +1,293 @@
+---
+description: "oRPC usage guidelines for backend procedures"
+alwaysApply: true
+---
+
+# oRPC Backend Guidelines
+
+## Overview
+
+oRPC (OpenAPI Remote Procedure Call) is used for defining type-safe backend procedures. It combines RPC with OpenAPI, allowing type-safe API definitions while adhering to the OpenAPI specification.
+
+## Installation
+
+- Packages: `@orpc/server`, `@orpc/client`, `zod`
+- Installation: `pnpm add @orpc/server @orpc/client zod`
+
+## File Structure
+
+All oRPC code lives in the `server/` directory at the project root.
+
+```
+server/
+├── orpc.ts                           # oRPC instance export
+├── router.ts                         # Master router (imports all sub-routers)
+├── middleware/                       # Authentication & authorization middleware
+│   ├── auth.ts                       # Base auth (publicProcedure, authenticatedProcedure)
+│   └── roles.ts                      # Role-based (medicalStaffProcedure, companyAdminProcedure, etc.)
+└── routers/
+    └── [feature]/                    # Feature-based router folder
+        ├── router.ts                 # Sub-router (imports queries & mutations)
+        ├── queries/                  # Read operations
+        │   └── [action-name].ts      # One file per query
+        └── mutations/                # Write operations
+            └── [action-name].ts      # One file per mutation
+```
+
+### Example Structure
+
+```
+server/
+├── orpc.ts
+├── router.ts
+└── routers/
+    ├── user/
+    │   ├── router.ts
+    │   ├── queries/
+    │   │   ├── get-user.ts
+    │   │   └── list-users.ts
+    │   └── mutations/
+    │       ├── create-user.ts
+    │       └── update-user.ts
+    └── booking/
+        ├── router.ts
+        ├── queries/
+        │   └── get-booking.ts
+        └── mutations/
+            └── create-booking.ts
+```
+
+## Core Files
+
+### oRPC Instance (`server/orpc.ts`)
+
+Single export of the oRPC server instance:
+
+```typescript
+import { os } from "@orpc/server";
+
+export const orpc = os;
+```
+
+### Master Router (`server/router.ts`)
+
+Imports and combines all feature routers:
+
+```typescript
+import { userRouter } from "./routers/user/router";
+import { bookingRouter } from "./routers/booking/router";
+
+export const appRouter = {
+    user: userRouter,
+    booking: bookingRouter,
+};
+
+export type AppRouter = typeof appRouter;
+```
+
+### Feature Router (`server/routers/[feature]/router.ts`)
+
+Imports all queries and mutations for the feature:
+
+```typescript
+import { getUser } from "./queries/get-user";
+import { listUsers } from "./queries/list-users";
+import { createUser } from "./mutations/create-user";
+
+export const userRouter = {
+    get: getUser,
+    list: listUsers,
+    create: createUser,
+};
+```
+
+## Procedure Patterns
+
+### Query (Read Operation)
+
+```typescript
+import { z } from "zod";
+import { orpc } from "@/server/orpc";
+
+export const getUser = orpc
+    .input(z.object({ id: z.string() }))
+    .handler(async ({ input }) => {
+        // Read logic here
+        return { id: input.id, name: "User Name" };
+    });
+```
+
+### Mutation (Write Operation)
+
+```typescript
+import { z } from "zod";
+import { orpc } from "@/server/orpc";
+
+export const createUser = orpc
+    .input(z.object({
+        name: z.string(),
+        email: z.string().email()
+    }))
+    .handler(async ({ input }) => {
+        // Write logic here
+        return { id: "new-id", ...input };
+    });
+```
+
+## Authentication Middleware
+
+Middleware files are located in `server/middleware/`. Use the appropriate procedure based on access requirements.
+
+### Available Procedures
+
+| Procedure | Location | Access Level |
+|-----------|----------|--------------|
+| `publicProcedure` | `@/server/middleware/auth` | No authentication required |
+| `authenticatedProcedure` | `@/server/middleware/auth` | Logged in user required |
+| `medicalStaffProcedure` | `@/server/middleware/roles` | `medical_staff` or `admin` role |
+| `companyAdminProcedure` | `@/server/middleware/roles` | `company_admin` or `admin` role |
+| `employeeProcedure` | `@/server/middleware/roles` | Any employee association |
+
+### Context Available
+
+Each procedure provides different context:
+
+```typescript
+// authenticatedProcedure context
+context.user      // Better Auth user object
+context.session   // Better Auth session object
+
+// Role-based procedures add:
+context.employee       // Employee record from database
+context.clientCompany  // Associated client company (if any)
+context.medicalCompany // Associated medical company (medicalStaffProcedure only)
+```
+
+### Usage Example
+
+```typescript
+import { z } from "zod";
+import { companyAdminProcedure } from "@/server/middleware/roles";
+
+export const createBooking = companyAdminProcedure
+    .input(z.object({
+        employeeId: z.number(),
+        scheduledAt: z.string(),
+    }))
+    .handler(async ({ input, context }) => {
+        // context.user - authenticated user
+        // context.employee - employee record with company_admin role
+        // context.clientCompany - the company they admin
+        return { id: "booking-id", companyId: context.clientCompany?.id };
+    });
+```
+
+## Naming Conventions
+
+### Files
+- Query files: `get-[entity].ts`, `list-[entities].ts`, `find-[entity].ts`
+- Mutation files: `create-[entity].ts`, `update-[entity].ts`, `delete-[entity].ts`
+
+### Exports
+- Procedure names should match the action: `getUser`, `createBooking`, `listEmployees`
+- Router names use feature name + "Router": `userRouter`, `bookingRouter`
+
+## Error Handling
+
+Use `ORPCError` for throwing errors:
+
+```typescript
+import { ORPCError } from "@orpc/server";
+
+throw new ORPCError("NOT_FOUND", { message: "User not found" });
+throw new ORPCError("UNAUTHORIZED");
+throw new ORPCError("BAD_REQUEST", { message: "Invalid input" });
+```
+
+## Best Practices
+
+1. **One procedure per file**: Each query or mutation has its own file
+2. **Feature-based organization**: Group related procedures by domain/feature
+3. **Use Zod for validation**: All inputs should be validated with Zod schemas
+4. **Export types**: Export `AppRouter` type from master router for client usage
+5. **Consistent naming**: Follow the naming conventions above
+6. **Context for auth**: Use middleware and context for authentication/authorization
+7. **No business logic in routers**: Router files only import and combine procedures
+
+## Adding a New Feature
+
+1. Create folder: `server/routers/[feature]/`
+2. Create subfolders: `queries/` and `mutations/`
+3. Create procedure files in appropriate subfolders
+4. Create `router.ts` that imports all procedures
+5. Import and add to master router in `server/router.ts`
+
+## Client-Side Integration
+
+### Client Files
+
+- **API Route**: `app/api/rpc/[[...rest]]/route.ts` - Handles all RPC requests
+- **Server Client**: `lib/orpc-server.ts` - Server-side client for RSC
+- **Client Client**: `lib/orpc-client.ts` - Client-side client with TanStack Query
+- **Query Provider**: `components/providers/query-provider.tsx` - TanStack Query provider
+
+### Client Usage (React Components)
+
+```typescript
+"use client";
+
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { orpc } from "@/lib/orpc-client";
+
+function MyComponent() {
+    const queryClient = useQueryClient();
+
+    const exampleQuery = useQuery(
+        orpc.example.get.queryOptions({
+            input: { id: "1" },
+        })
+    );
+
+    const createMutation = useMutation(
+        orpc.example.create.mutationOptions({
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ["example"] });
+            },
+        })
+    );
+
+    return (
+        <div>
+            {exampleQuery.isLoading && <p>Loading...</p>}
+            {exampleQuery.data && <p>{exampleQuery.data.name}</p>}
+            <button onClick={() => createMutation.mutate({ name: "New" })}>
+                Create
+            </button>
+        </div>
+    );
+}
+```
+
+### Server Component Usage
+
+```typescript
+import { orpcClient } from "@/lib/orpc-client";
+
+async function ServerComponent() {
+    const data = await orpcClient.example.get({ id: "1" });
+    return <div>{data.name}</div>;
+}
+```
+
+### Query Key Patterns
+
+- Queries automatically generate query keys based on the procedure path
+- Use `queryClient.invalidateQueries({ queryKey: ["feature"] })` to invalidate
+
+## External Documentation
+
+- oRPC Documentation: https://orpc.dev/docs
+- oRPC Getting Started: https://orpc.dev/docs/getting-started
+- oRPC Next.js: https://orpc.dev/docs/adapters/next
+- oRPC TanStack Query: https://orpc.dev/docs/integrations/tanstack-query
+- Zod Documentation: https://zod.dev
