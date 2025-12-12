@@ -119,7 +119,7 @@ export default function MedicalRegisterPage() {
               Enregistrez votre service de santé
             </h1>
             <p className="text-slate-600">
-              Créez votre espace professionnel sur CareUp
+              Créez votre espace professionnel sur Oxygenial
             </p>
           </motion.div>
 

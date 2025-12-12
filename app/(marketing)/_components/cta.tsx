@@ -21,7 +21,7 @@ export function CTA() {
             Vous êtes...
           </motion.h2>
           <motion.p variants={verticalFadeIn} className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto">
-            Que vous soyez une entreprise cherchant à se conformer ou un service de santé souhaitant se digitaliser, CareUp est fait pour vous.
+            Que vous soyez une entreprise cherchant à se conformer ou un service de santé souhaitant se digitaliser, Oxygenial est fait pour vous.
           </motion.p>
         </motion.div>
 

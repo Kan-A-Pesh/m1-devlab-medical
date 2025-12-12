@@ -31,7 +31,7 @@ export default function AuthLayout({
                 />
               </svg>
             </div>
-            CareUp
+            Oxygenial
           </Link>
 
           <div className="space-y-6">
@@ -41,7 +41,7 @@ export default function AuthLayout({
               <span className="text-white/80">simplifiée pour tous.</span>
             </h2>
             <p className="text-lg text-white/70 max-w-md leading-relaxed">
-              Rejoignez des milliers d&apos;entreprises qui font confiance à CareUp pour gérer leurs obligations de santé au travail.
+              Rejoignez des milliers d&apos;entreprises qui font confiance à Oxygenial pour gérer leurs obligations de santé au travail.
             </p>
           </div>
 

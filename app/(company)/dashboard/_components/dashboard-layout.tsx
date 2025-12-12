@@ -46,7 +46,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
                   <Building2 className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-bold text-slate-900">CareUp</span>
+                <span className="font-bold text-slate-900">Oxygenial</span>
               </Link>
 
               <div className="hidden md:flex items-center gap-1">

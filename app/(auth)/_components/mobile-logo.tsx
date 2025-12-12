@@ -24,7 +24,7 @@ export function MobileLogo() {
             />
           </svg>
         </div>
-        CareUp
+        Oxygenial
       </Link>
     </div>
   );

@@ -128,7 +128,7 @@ export default function InvitePage() {
           Bienvenue dans l&apos;équipe !
         </h1>
         <p className="text-slate-600">
-          Vous avez été invité à rejoindre CareUp
+          Vous avez été invité à rejoindre Oxygenial
         </p>
       </motion.div>
 

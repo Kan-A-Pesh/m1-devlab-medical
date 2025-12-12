@@ -48,7 +48,7 @@ export function MedicalDashboardLayout({ children }: MedicalLayoutProps) {
                 <div className="w-8 h-8 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center">
                   <Stethoscope className="w-5 h-5 text-white" />
                 </div>
-                <span className="font-bold text-slate-900">CareUp</span>
+                <span className="font-bold text-slate-900">Oxygenial</span>
                 <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
                   Médical
                 </span>
@@ -56,7 +56,7 @@ export function MedicalDashboardLayout({ children }: MedicalLayoutProps) {
 
               <div className="hidden md:flex items-center gap-1">
                 {navigation.map((item) => {
-                  const isActive = pathname === item.href || 
+                  const isActive = pathname === item.href ||
                     (item.href !== "/medical" && pathname.startsWith(item.href));
                   return (
                     <Link key={item.name} href={item.href}>
@@ -121,7 +121,7 @@ export function MedicalDashboardLayout({ children }: MedicalLayoutProps) {
           >
             <div className="container mx-auto px-4 py-3 space-y-1">
               {navigation.map((item) => {
-                const isActive = pathname === item.href || 
+                const isActive = pathname === item.href ||
                   (item.href !== "/medical" && pathname.startsWith(item.href));
                 return (
                   <Link key={item.name} href={item.href} onClick={() => setMobileMenuOpen(false)}>

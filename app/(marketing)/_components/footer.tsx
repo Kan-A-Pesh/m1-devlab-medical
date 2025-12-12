@@ -11,7 +11,7 @@ export function Footer() {
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
                 <Stethoscope className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">CareUp</span>
+              <span className="text-xl font-bold">Oxygenial</span>
             </Link>
             <p className="text-slate-400 leading-relaxed max-w-sm">
               L&apos;annuaire de référence pour les TPE et PME françaises à la recherche d&apos;un service de santé au travail.
@@ -58,7 +58,7 @@ export function Footer() {
 
         <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm text-slate-500">
-            © {new Date().getFullYear()} CareUp. Tous droits réservés.
+            © {new Date().getFullYear()} Oxygenial. Tous droits réservés.
           </div>
           <div className="flex gap-6 text-sm text-slate-500">
             <Link href="/privacy" className="hover:text-white transition-colors">Confidentialité</Link>
