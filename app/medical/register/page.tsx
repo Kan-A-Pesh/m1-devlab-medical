@@ -59,11 +59,11 @@ export default function MedicalRegisterPage() {
     },
   });
 
-  useEffect(() => {
-    if (!sessionPending && !session) {
-      router.push("/sign-up?redirect=/medical/register");
-    }
-  }, [session, sessionPending, router]);
+//   useEffect(() => {
+//     if (!sessionPending && !session) {
+//       router.push("/medical/register");
+//     }
+//   }, [session, sessionPending, router]);
 
   useEffect(() => {
     if (statusQuery.data) {
