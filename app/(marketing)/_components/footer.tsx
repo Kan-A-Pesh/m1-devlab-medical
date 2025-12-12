@@ -1,25 +1,71 @@
 import Link from "next/link";
+import { Stethoscope } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-white border-t border-slate-100 py-12">
+    <footer className="bg-slate-900 text-white py-16">
       <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-tight text-slate-900">CareUp</span>
+        <div className="grid md:grid-cols-4 gap-12 mb-12">
+          <div className="md:col-span-2">
+            <Link href="/" className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+                <Stethoscope className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-bold">CareUp</span>
+            </Link>
+            <p className="text-slate-400 leading-relaxed max-w-sm">
+              L&apos;annuaire de référence pour les TPE et PME françaises à la recherche d&apos;un service de santé au travail.
+            </p>
           </div>
 
+          <div>
+            <h4 className="font-semibold mb-4">Entreprises</h4>
+            <ul className="space-y-2 text-slate-400">
+              <li>
+                <Link href="/sign-up" className="hover:text-white transition-colors">
+                  Créer un compte
+                </Link>
+              </li>
+              <li>
+                <Link href="/sign-in" className="hover:text-white transition-colors">
+                  Se connecter
+                </Link>
+              </li>
+              <li>
+                <Link href="#features" className="hover:text-white transition-colors">
+                  Fonctionnalités
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-4">Services de Santé</h4>
+            <ul className="space-y-2 text-slate-400">
+              <li>
+                <Link href="/medical/register" className="hover:text-white transition-colors">
+                  Référencer mon service
+                </Link>
+              </li>
+              <li>
+                <Link href="/sign-in" className="hover:text-white transition-colors">
+                  Espace professionnel
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm text-slate-500">
             © {new Date().getFullYear()} CareUp. Tous droits réservés.
           </div>
-
           <div className="flex gap-6 text-sm text-slate-500">
-            <Link href="/privacy" className="hover:text-slate-900 transition-colors">Confidentialité</Link>
-            <Link href="/terms" className="hover:text-slate-900 transition-colors">Conditions</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Confidentialité</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Conditions</Link>
           </div>
         </div>
       </div>
     </footer>
   );
 }
-

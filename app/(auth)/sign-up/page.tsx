@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { signUp } from "@/lib/auth-client";
@@ -20,6 +20,9 @@ import { validatePasswords } from "../_hooks/use-password-validation";
 
 export default function SignUpPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/onboarding";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,7 +47,7 @@ export default function SignUpPage() {
       email,
       password,
       name,
-      callbackURL: "/onboarding",
+      callbackURL: redirectTo,
     });
 
     if (error) {
@@ -55,7 +58,7 @@ export default function SignUpPage() {
       return;
     }
 
-    router.push("/onboarding");
+    router.push(redirectTo);
   }
 
   return (

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import { verticalFadeIn } from "@/lib/animations";
+import { Stethoscope } from "lucide-react";
 
 export function Navbar() {
   return (
@@ -14,8 +15,11 @@ export function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-md border-b border-gray-100"
     >
       <div className="flex items-center gap-2">
-        <Link href="/" className="text-xl font-bold tracking-tight text-primary">
-          CareUp
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+            <Stethoscope className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-xl font-bold tracking-tight text-slate-900">CareUp</span>
         </Link>
       </div>
 
@@ -27,7 +31,7 @@ export function Navbar() {
           À propos
         </Link>
         <div className="h-4 w-px bg-slate-200" />
-        <Link href="/sign-up?role=medical" className="text-blue-600 hover:text-blue-700 transition-colors">
+        <Link href="/medical/register" className="text-emerald-600 hover:text-emerald-700 transition-colors">
           Vous êtes un service de santé ?
         </Link>
       </div>
@@ -39,7 +43,7 @@ export function Navbar() {
           </Button>
         </Link>
         <Link href="/sign-up">
-          <Button size="sm">S'inscrire</Button>
+          <Button size="sm">Créer mon compte</Button>
         </Link>
       </div>
     </motion.nav>

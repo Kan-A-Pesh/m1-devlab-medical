@@ -1,6 +1,5 @@
 import { ORPCError, os } from "@orpc/server";
 import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 
 export const publicProcedure = os.$context<{
     headers: Headers;

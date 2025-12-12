@@ -20,7 +20,7 @@ export function About() {
               Le contexte
             </motion.div>
             <motion.h2 variants={verticalFadeIn} className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">
-              Un défi pour 1,1 million d'entreprises
+              Un défi pour 1,1 million d&apos;entreprises
             </motion.h2>
             <motion.p variants={verticalFadeIn} className="text-slate-600 text-lg mb-8 leading-relaxed">
               Face à la complexité du marché et à la pénurie de médecins du travail (-21% depuis 2010),
@@ -55,7 +55,7 @@ export function About() {
 
               <div className="relative z-10">
                 <div className="text-6xl font-bold mb-2">1,1 M</div>
-                <div className="text-xl font-medium text-blue-100 mb-8">TPE & PME concernées</div>
+                <div className="text-xl font-medium text-blue-100 mb-8">TPE &amp; PME concernées</div>
 
                 <div className="h-px bg-white/20 my-8" />
 
@@ -77,4 +77,3 @@ export function About() {
     </section>
   );
 }
-

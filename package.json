@@ -13,12 +13,14 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:start": "docker compose up -d",
-    "db:stop": "docker compose down"
+    "db:stop": "docker compose down",
+    "db:seed": "npx tsx scripts/seed.ts"
   },
   "dependencies": {
     "@orpc/client": "^1.12.2",
     "@orpc/server": "^1.12.2",
     "@orpc/tanstack-query": "^1.12.2",
+    "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
