@@ -1,0 +1,238 @@
+---
+description: "Motion (formerly Framer Motion) animation patterns and conventions for page, modal, and element transitions"
+alwaysApply: true
+---
+
+# Motion Animation Guidelines
+
+## Overview
+
+This project uses Motion (formerly Framer Motion) for animations. Motion provides declarative animations for React components, focusing on page transitions, modal animations, and element enter/exit animations.
+
+## Installation
+
+- Package: `motion`
+- Version: Latest stable
+- Installation: `pnpm add motion`
+
+## Animation Philosophy
+
+- **Default Animation**: Vertical fade-in (opacity + y-axis translation)
+- **Transitions**: When elements exit and enter, create coherent transitions between them
+- **Performance**: Use `AnimatePresence` for enter/exit animations
+- **Consistency**: Use predefined animation variants from `@/lib/animations`
+
+## Project Structure
+
+### Animation Utilities
+
+**Location**: `lib/animations.ts`
+
+Contains:
+- Animation variants (`verticalFadeIn`, `pageTransition`, `modalBackdrop`, `modalContent`, `elementEnterExit`)
+- Transition durations (`fast`, `normal`, `slow`)
+- Transition easing functions (`easeInOut`, `easeOut`, `easeIn`)
+
+### Animation Components
+
+**Location**: `components/animations/`
+
+- `PageTransition` - Wrapper for page-level animations
+- `PageTemplate` - Template component for page transitions
+- `ModalBackdrop` - Backdrop animation for modals
+- `ModalContent` - Content animation for modals
+- `ElementTransition` - Enter/exit animations for elements
+- `TransitionGroup` - Group animations for multiple elements
+
+## Usage Patterns
+
+### Page Transitions
+
+Wrap page content with `PageTransition` or use `PageTemplate`:
+
+```typescript
+import { PageTransition } from "@/components/animations";
+
+export default function Page() {
+  return (
+    <PageTransition>
+      <div>Page content</div>
+    </PageTransition>
+  );
+}
+```
+
+### Modal Animations
+
+Use `ModalBackdrop` and `ModalContent` together:
+
+```typescript
+import { ModalBackdrop, ModalContent } from "@/components/animations";
+
+function Modal({ isOpen, onClose }) {
+  if (!isOpen) return null;
+
+  return (
+    <ModalBackdrop onClick={onClose}>
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <ModalContent className="bg-white rounded-lg p-6 max-w-md w-full">
+          <h2>Modal Title</h2>
+          <p>Modal content</p>
+        </ModalContent>
+      </div>
+    </ModalBackdrop>
+  );
+}
+```
+
+### Element Enter/Exit
+
+Use `ElementTransition` for conditional rendering:
+
+```typescript
+import { ElementTransition } from "@/components/animations";
+
+function ConditionalElement({ show }) {
+  return (
+    <ElementTransition show={show} className="my-4">
+      <div>This element fades in/out</div>
+    </ElementTransition>
+  );
+}
+```
+
+### Coherent Transitions Between Elements
+
+Use `AnimatePresence` with `mode="wait"` for sequential transitions:
+
+```typescript
+import { AnimatePresence } from "motion/react";
+import { elementEnterExit, transitionDuration, transitionEasing } from "@/lib/animations";
+
+function SwitchingContent({ currentView }) {
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={currentView}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={elementEnterExit}
+        transition={{
+          duration: transitionDuration.normal,
+          ease: transitionEasing.easeInOut,
+        }}
+      >
+        {currentView === "view1" && <View1 />}
+        {currentView === "view2" && <View2 />}
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+```
+
+## Animation Variants
+
+### Vertical Fade-In (Default)
+
+- Initial: `opacity: 0, y: 20`
+- Animate: `opacity: 1, y: 0`
+- Exit: `opacity: 0, y: -20`
+
+### Page Transition
+
+Same as vertical fade-in, optimized for page-level animations.
+
+### Modal Animations
+
+- **Backdrop**: Fade in/out only
+- **Content**: Fade + vertical slide + slight scale
+
+### Element Enter/Exit
+
+Standard vertical fade-in for elements.
+
+## Transition Timing
+
+- **Fast**: 0.15s - Quick UI feedback
+- **Normal**: 0.2s - Default for most animations
+- **Slow**: 0.3s - Deliberate, noticeable transitions
+
+## Best Practices
+
+1. **Use Predefined Variants**: Always use variants from `@/lib/animations` for consistency
+2. **AnimatePresence**: Use `AnimatePresence` for enter/exit animations
+3. **Mode Selection**:
+   - `mode="sync"` - Elements animate simultaneously (default)
+   - `mode="wait"` - Wait for exit before entering (for coherent transitions)
+4. **Performance**: Avoid animating layout properties when possible; prefer `transform` and `opacity`
+5. **Accessibility**: Respect `prefers-reduced-motion` media query (can be added to variants)
+6. **Client Components**: All animation components must be client components (`"use client"`)
+
+## Custom Animations
+
+When creating custom animations:
+
+1. Add variants to `lib/animations.ts`
+2. Follow the vertical fade-in pattern unless there's a specific reason
+3. Use consistent timing and easing
+4. Document the use case in comments if it deviates from standard patterns
+
+## Examples
+
+### Custom Variant Usage
+
+```typescript
+import { motion } from "motion/react";
+import { verticalFadeIn, transitionDuration, transitionEasing } from "@/lib/animations";
+
+function CustomAnimatedElement() {
+  return (
+    <motion.div
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={verticalFadeIn}
+      transition={{
+        duration: transitionDuration.normal,
+        ease: transitionEasing.easeInOut,
+      }}
+    >
+      Content
+    </motion.div>
+  );
+}
+```
+
+### Staggered Animations
+
+```typescript
+import { motion } from "motion/react";
+import { verticalFadeIn, transitionDuration, transitionEasing } from "@/lib/animations";
+
+const containerVariants = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+function StaggeredList({ items }) {
+  return (
+    <motion.div variants={containerVariants} initial="initial" animate="animate">
+      {items.map((item) => (
+        <motion.div key={item.id} variants={verticalFadeIn}>
+          {item.content}
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+}
+```
+
+## External Documentation
+
+- Motion Documentation: https://motion.dev
+- Motion React: https://motion.dev/react
+- AnimatePresence: https://motion.dev/react/animate-presence

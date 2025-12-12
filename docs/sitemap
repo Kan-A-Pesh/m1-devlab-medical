@@ -1,0 +1,35 @@
+
+## /(marketing)
+/ - Landing page
+
+
+## (auth)
+/invite - Used when invited by an org
+/sign-in - Login page
+/forgot-password - It’s self-explainatory
+/sign-up - Sign up page
+
+
+## /medical - Dashboard for medical inner-entreprise
+/ - Main dashboard for medical where you can see new items and notifications
+/requests - All membership requests
+/requests/<id> - A request page with the company details and accept and deny buttons
+/company - Page with all companies
+/company/<id> - Company page with details and employees list
+/company/<id>/employee/<id> - Employee page with bookings and documents
+
+
+## /(company) - Dashboard for client companies wanting a medical inner-enterprise
+/onboarding (layout 1) - The page where the user lands when creating an account without having a company the user can add details about his company and complete a form for having more targeted inner-enterprise and so let the user choose the best one for his company (it’s the core of the app)
+
+### Available after onboarding
+/onboarding (layout 2) - The requests page where you can see results and send a request to a inner-enterprise, when sent you will see a different page and can’t send a new one until it’s accepted, rejected (by inner-enterprise) or dismissed (by user)
+
+### Available after membership
+/dashboard - The main dashboard where you can see next bookings
+/employee - The list of employees
+/employee/<id> - An employee page where you can manage it, view its bookings and schedule one
+
+
+## /(employee) - Dashboard for personal page
+/me - The personal page of the employee where he can see his docs and schedule a booking

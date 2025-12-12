@@ -1,0 +1,197 @@
+---
+description: "Instructions for creating and updating cursor rules when making architectural changes"
+alwaysApply: true
+---
+
+# Cursor Rules Maintenance
+
+When making architectural changes, adding new packages, or introducing new patterns, you MUST create or update cursor rules to document these changes for future LLM interactions.
+
+## When to Create/Update Rules
+
+Create or update cursor rules when:
+
+1. **Adding new packages/dependencies**
+   - Example: Adding Motion (formerly Framer Motion), Zustand, React Query, etc.
+   - Document: Usage patterns, best practices, project-specific conventions
+
+2. **Changing architecture patterns**
+   - Example: Adding new state management, API patterns, file organization
+   - Document: How and when to use these patterns
+
+3. **Introducing new tools or workflows**
+   - Example: Adding testing frameworks, CI/CD changes, new build tools
+   - Document: Setup, usage, and conventions
+
+4. **Establishing new code patterns**
+   - Example: New component patterns, API conventions, data fetching patterns
+   - Document: Examples and when to use
+
+5. **Adding new directories or file organization**
+   - Example: New `hooks/`, `services/`, `types/` directories
+   - Document: Purpose, conventions, and usage
+
+## Rule Creation Process
+
+### Step 1: Understand the Change
+
+Before creating a rule, ensure you understand:
+- What package/tool/pattern is being added
+- Why it's being added (user intent)
+- How it will be used in this project
+- Any project-specific conventions or constraints
+
+**If unclear, ask the user:**
+- "How do you plan to use [package/pattern] in this project?"
+- "Are there any specific conventions or patterns you want to follow?"
+- "Should this follow any existing patterns in the codebase?"
+
+### Step 2: Research and Document
+
+For new packages:
+1. Review package documentation
+2. Identify common usage patterns
+3. Determine project-specific conventions
+4. Note any integration points with existing code
+
+### Step 3: Create the Rule
+
+Create a new rule file in `.cursor/rules/[rule-name].mdc`:
+
+```markdown
+---
+description: "Brief description of what this rule covers"
+alwaysApply: false
+globs: ["**/*.{ts,tsx}"]  # Optional: file patterns
+---
+
+# [Package/Pattern Name] Usage Guidelines
+
+## Overview
+Brief description of what this is and why it's used in this project.
+
+## Installation
+- Package name: `package-name`
+- Version: `x.x.x`
+- Installation: `pnpm add package-name`
+
+## Basic Usage
+Common usage patterns and examples.
+
+## Project Conventions
+Project-specific conventions and patterns.
+
+## Best Practices
+Best practices for using this in the project.
+
+## Examples
+```typescript
+// Example code showing proper usage
+```
+
+## External Documentation
+- Official docs: https://example.com/docs
+- Related rules: @other-rule-name
+```
+
+### Step 4: Rule Naming Conventions
+
+- Use kebab-case: `motion-animations`, `state-management`, `api-patterns`
+- Be descriptive: `zustand-state-management` not `zustand`
+- Group related rules: `ui-components`, `form-handling`, `data-fetching`
+
+### Step 5: Rule Configuration
+
+Choose appropriate rule type:
+
+- **Always Apply**: Core project patterns, critical conventions
+- **Apply Intelligently**: Package-specific rules, feature-specific patterns
+- **Apply to Specific Files**: File-type specific (e.g., only `.test.ts` files)
+- **Apply Manually**: Optional patterns, advanced usage
+
+## Example: Adding Motion (Framer Motion)
+
+When user adds Motion and explains usage:
+
+1. **Understand intent**: Ask about animation patterns, performance requirements
+2. **Create rule**: `.cursor/rules/motion-animations.mdc`
+3. **Document**:
+   - Installation and setup
+   - Project-specific animation patterns
+   - Performance considerations
+   - Common animation components/utilities
+   - Integration with existing components
+
+## Rule Update Process
+
+When updating existing functionality:
+
+1. Check if a rule already exists for the pattern/package
+2. Update the existing rule rather than creating duplicates
+3. Add new sections if needed
+4. Update examples to reflect current usage
+5. Remove outdated information
+
+## Rule Quality Checklist
+
+Before finalizing a rule, ensure:
+
+- [ ] Clear description in frontmatter
+- [ ] Appropriate `alwaysApply` setting
+- [ ] File patterns (`globs`) if needed
+- [ ] Examples from actual project code
+- [ ] Links to external documentation
+- [ ] Project-specific conventions documented
+- [ ] Integration points with existing code explained
+- [ ] Common pitfalls or gotchas mentioned
+
+## Rule Organization
+
+Group related rules:
+- `ui/` - UI component patterns
+- `data/` - Data fetching, state management
+- `api/` - API patterns, routes
+- `testing/` - Testing patterns and tools
+- `build/` - Build tools, deployment
+
+## Reference Existing Rules
+
+When creating new rules, reference related rules:
+- Use `@rule-name` to reference other rules
+- Link to related documentation
+- Avoid duplicating information
+
+## Documentation Standards
+
+- Keep rules focused and under 500 lines
+- Split large topics into multiple rules
+- Use concrete examples from the codebase
+- Include code references: `@file-path.ts`
+- Link to official documentation
+- Document project-specific deviations from defaults
+
+## After Implementation
+
+After adding a package or pattern:
+
+1. ✅ Implement the feature
+2. ✅ Create/update cursor rule
+3. ✅ Add examples from actual implementation
+4. ✅ Reference in project overview rule if significant
+5. ✅ Update related rules if needed
+
+## Questions to Ask Users
+
+When unclear about how to document a change:
+
+- "How do you plan to use [X] in this project?"
+- "Are there specific patterns or conventions you want to follow?"
+- "Should this integrate with existing [Y]?"
+- "Are there any performance or architectural constraints?"
+- "Do you have examples from other projects?"
+
+## External Resources
+
+- Cursor Rules Documentation: https://cursor.com/docs/context/rules
+- Rule examples: Check `.cursor/rules/` directory
+- Project overview: See `@project-overview` rule

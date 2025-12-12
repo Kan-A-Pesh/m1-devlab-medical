@@ -1,0 +1,442 @@
+---
+description: "shadcn/ui component library usage guidelines, installation patterns, and MCP server integration"
+alwaysApply: true
+---
+
+# shadcn/ui Usage Guidelines
+
+## Overview
+
+shadcn/ui is a collection of beautifully-designed, accessible components and a code distribution platform. It is built with TypeScript, Tailwind CSS, and Radix UI primitives. It supports multiple frameworks including Next.js, Vite, Remix, Astro, and more. Open Source. Open Code. AI-Ready.
+
+**Key Principles:**
+- **Open Code**: Components are copied into your project, not installed as dependencies
+- **Composition**: Build complex components from simple primitives
+- **Distribution**: Components are distributed via a registry system
+- **Beautiful Defaults**: Components look great out of the box
+- **AI-Ready**: Designed to work seamlessly with AI assistants
+
+## Installation
+
+### Initial Setup
+
+The project uses shadcn/ui CLI for component management. Components are installed via:
+
+```bash
+npx shadcn@latest add [component-name]
+```
+
+### Project Configuration
+
+Configuration is stored in `components.json`:
+
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "app/globals.css",
+    "baseColor": "slate",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  }
+}
+```
+
+### Component Installation Paths
+
+- **Components**: `components/ui/`
+- **Utils**: `lib/utils.ts` (contains `cn` helper)
+- **Hooks**: `hooks/` (if needed)
+
+## Component Usage Patterns
+
+### Basic Component Import
+
+```typescript
+import { Button } from "@/components/ui/button"
+
+function MyComponent() {
+  return <Button>Click me</Button>
+}
+```
+
+### Component Variants
+
+Components use `class-variance-authority` (CVA) for variant management:
+
+```typescript
+import { Button } from "@/components/ui/button"
+
+function ButtonExamples() {
+  return (
+    <>
+      <Button variant="default">Default</Button>
+      <Button variant="destructive">Destructive</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="link">Link</Button>
+      <Button size="sm">Small</Button>
+      <Button size="lg">Large</Button>
+      <Button size="icon">Icon</Button>
+    </>
+  )
+}
+```
+
+### Composition Pattern
+
+Components are designed to be composed together:
+
+```typescript
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+
+function CardExample() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Card Title</CardTitle>
+        <CardDescription>Card description</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Button>Action</Button>
+      </CardContent>
+    </Card>
+  )
+}
+```
+
+### Customization
+
+Since components are copied into your project, you can modify them directly:
+
+```typescript
+// components/ui/button.tsx
+// Modify the component directly to customize behavior or styling
+```
+
+## Available Components
+
+### Form & Input
+- Form, Field, Button, Button Group, Input, Input Group, Input OTP, Textarea, Checkbox, Radio Group, Select, Switch, Slider, Calendar, Date Picker, Combobox, Label
+
+### Layout & Navigation
+- Accordion, Breadcrumb, Navigation Menu, Sidebar, Tabs, Separator, Scroll Area, Resizable
+
+### Overlays & Dialogs
+- Dialog, Alert Dialog, Sheet, Drawer, Popover, Tooltip, Hover Card, Context Menu, Dropdown Menu, Menubar, Command
+
+### Feedback & Status
+- Alert, Toast, Progress, Spinner, Skeleton, Badge, Empty
+
+### Display & Media
+- Avatar, Card, Table, Data Table, Chart, Carousel, Aspect Ratio, Typography, Item, Kbd
+
+### Misc
+- Collapsible, Toggle, Toggle Group, Pagination
+
+## MCP Server Integration
+
+### Available MCP Resources
+
+The shadcn/ui MCP server provides access to component browsing, searching, and installation capabilities. When the MCP server is configured, you have access to:
+
+- **Component Registry**: Browse all available components in the shadcn/ui registry
+- **Component Search**: Search for components by name, category, or functionality
+- **Component Installation**: Install components directly into the project using MCP tools
+- **Component Documentation**: Access component documentation and examples
+- **Code Generation**: Generate code examples using shadcn/ui components
+
+### How to Use MCP Resources
+
+When implementing UI features, use the MCP server to:
+
+1. **Search for Components**: Query the registry to find components that match your needs before building custom solutions
+2. **Install Components**: Use MCP installation tools to add components to `components/ui/` before importing them
+3. **Browse Documentation**: Access component documentation, props, variants, and examples through MCP
+4. **Generate Code**: Use MCP to generate code examples with proper imports and usage patterns
+
+**MCP Usage Workflow:**
+- Before creating any UI element, search the shadcn/ui registry via MCP
+- Install required components using MCP installation capabilities
+- Access component documentation to understand props and variants
+- Generate code examples showing proper component composition
+- Compose multiple shadcn/ui components together rather than building from scratch
+
+## Project Conventions
+
+### Component Organization
+
+- All shadcn/ui components go in `components/ui/`
+- Use named exports: `export { Button, buttonVariants }`
+- Components are client components by default (use `"use client"` when needed)
+
+### Styling
+
+- Use Tailwind CSS classes for styling
+- Use the `cn` utility from `@/lib/utils` for className merging
+- Follow the design system defined in `app/globals.css`
+- Use CSS variables for theming (defined in globals.css)
+
+### TypeScript
+
+- All components are fully typed
+- Use `VariantProps` from `class-variance-authority` for variant types
+- Extend HTML element props when appropriate
+
+### Accessibility
+
+- Components are built on Radix UI primitives (accessible by default)
+- Follow ARIA patterns
+- Ensure keyboard navigation works
+- Test with screen readers
+
+## Component Selection Priority
+
+**CRITICAL: Always use shadcn/ui components FIRST before creating custom components.**
+
+### Priority Order
+
+1. **Check shadcn/ui Registry First**: When creating any UI element (page, component, form, etc.), ALWAYS check if shadcn/ui has a component that meets your needs
+2. **Use MCP Server**: Use the shadcn/ui MCP server to search and browse available components
+3. **Install and Compose**: Install required shadcn/ui components and compose them together
+4. **Customize Installed Components**: Modify installed shadcn/ui components directly if needed
+5. **Create Custom Only When Necessary**: Only create custom components if:
+   - shadcn/ui doesn't have a suitable component
+   - You need layout/structure components (which shadcn/ui doesn't provide)
+   - The component is highly project-specific and cannot be built from shadcn/ui primitives
+
+### When Creating New Pages or Elements
+
+**Before coding:**
+1. Identify what UI elements you need (buttons, forms, dialogs, cards, etc.)
+2. Search shadcn/ui registry via MCP or documentation
+3. Install required components
+4. Compose them together to build your feature
+5. Only write custom code for layout/structure or if no suitable component exists
+
+**Example Workflow:**
+```typescript
+// ❌ DON'T: Create custom button component
+function CustomButton() { ... }
+
+// ✅ DO: Use shadcn/ui Button
+import { Button } from "@/components/ui/button"
+
+// ❌ DON'T: Create custom form from scratch
+function CustomForm() { ... }
+
+// ✅ DO: Use shadcn/ui Form, Input, Label components
+import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+```
+
+## Best Practices
+
+1. **Search Before Building**: Always search shadcn/ui registry before creating custom components
+2. **Install Before Using**: Install components via MCP or CLI before importing
+3. **Compose Components**: Build complex UIs by composing simple shadcn/ui components
+4. **Customize Installed Components**: Modify installed components directly in your project
+5. **Use Variants**: Leverage CVA variants for component variations
+6. **Follow Patterns**: Match existing component patterns in the codebase
+7. **Accessibility First**: shadcn/ui components are accessible by default
+8. **Type Safety**: Use TypeScript types provided by components
+
+## Updating Components
+
+To update an existing component:
+
+```bash
+npx shadcn@latest add [component-name] --overwrite
+```
+
+This will overwrite the existing component with the latest version from the registry.
+
+## Documentation Resources
+
+- **Main Documentation**: https://ui.shadcn.com/docs
+- **Components**: https://ui.shadcn.com/docs/components
+- **CLI Reference**: https://ui.shadcn.com/docs/cli
+- **Theming Guide**: https://ui.shadcn.com/docs/theming
+- **MCP Server Docs**: https://ui.shadcn.com/docs/mcp
+- **Registry**: https://ui.shadcn.com/docs/registry
+- **LLMs.txt**: https://ui.shadcn.com/llms.txt
+
+## LLMs.txt Content Reference
+
+The following is the complete content from https://ui.shadcn.com/llms.txt for AI assistant reference:
+
+```
+# shadcn/ui
+
+> shadcn/ui is a collection of beautifully-designed, accessible components and a code distribution platform. It is built with TypeScript, Tailwind CSS, and Radix UI primitives. It supports multiple frameworks including Next.js, Vite, Remix, Astro, and more. Open Source. Open Code. AI-Ready. It also comes with a command-line tool to install and manage components and a registry system to publish and distribute code.
+
+## Overview
+
+- [Introduction](https://ui.shadcn.com/docs): Core principles—Open Code, Composition, Distribution, Beautiful Defaults, and AI-Ready design.
+- [CLI](https://ui.shadcn.com/docs/cli): Command-line tool for installing and managing components.
+- [components.json](https://ui.shadcn.com/docs/components-json): Configuration file for customizing the CLI and component installation.
+- [Theming](https://ui.shadcn.com/docs/theming): Guide to customizing colors, typography, and design tokens.
+- [Changelog](https://ui.shadcn.com/docs/changelog): Release notes and version history.
+- [About](https://ui.shadcn.com/docs/about): Credits and project information.
+
+## Installation
+
+- [Next.js](https://ui.shadcn.com/docs/installation/next): Install shadcn/ui in a Next.js project.
+- [Vite](https://ui.shadcn.com/docs/installation/vite): Install shadcn/ui in a Vite project.
+- [Remix](https://ui.shadcn.com/docs/installation/remix): Install shadcn/ui in a Remix project.
+- [Astro](https://ui.shadcn.com/docs/installation/astro): Install shadcn/ui in an Astro project.
+- [Laravel](https://ui.shadcn.com/docs/installation/laravel): Install shadcn/ui in a Laravel project.
+- [Gatsby](https://ui.shadcn.com/docs/installation/gatsby): Install shadcn/ui in a Gatsby project.
+- [React Router](https://ui.shadcn.com/docs/installation/react-router): Install shadcn/ui in a React Router project.
+- [TanStack Router](https://ui.shadcn.com/docs/installation/tanstack-router): Install shadcn/ui in a TanStack Router project.
+- [TanStack Start](https://ui.shadcn.com/docs/installation/tanstack): Install shadcn/ui in a TanStack Start project.
+- [Manual Installation](https://ui.shadcn.com/docs/installation/manual): Manually install shadcn/ui without the CLI.
+
+## Components
+
+### Form & Input
+
+- [Form](https://ui.shadcn.com/docs/components/form): Building forms with React Hook Form and Zod validation.
+- [Field](https://ui.shadcn.com/docs/components/field): Field component for form inputs with labels and error messages.
+- [Button](https://ui.shadcn.com/docs/components/button): Button component with multiple variants.
+- [Button Group](https://ui.shadcn.com/docs/components/button-group): Group multiple buttons together.
+- [Input](https://ui.shadcn.com/docs/components/input): Text input component.
+- [Input Group](https://ui.shadcn.com/docs/components/input-group): Input component with prefix and suffix addons.
+- [Input OTP](https://ui.shadcn.com/docs/components/input-otp): One-time password input component.
+- [Textarea](https://ui.shadcn.com/docs/components/textarea): Multi-line text input component.
+- [Checkbox](https://ui.shadcn.com/docs/components/checkbox): Checkbox input component.
+- [Radio Group](https://ui.shadcn.com/docs/components/radio-group): Radio button group component.
+- [Select](https://ui.shadcn.com/docs/components/select): Select dropdown component.
+- [Switch](https://ui.shadcn.com/docs/components/switch): Toggle switch component.
+- [Slider](https://ui.shadcn.com/docs/components/slider): Slider input component.
+- [Calendar](https://ui.shadcn.com/docs/components/calendar): Calendar component for date selection.
+- [Date Picker](https://ui.shadcn.com/docs/components/date-picker): Date picker component combining input and calendar.
+- [Combobox](https://ui.shadcn.com/docs/components/combobox): Searchable select component with autocomplete.
+- [Label](https://ui.shadcn.com/docs/components/label): Form label component.
+
+### Layout & Navigation
+
+- [Accordion](https://ui.shadcn.com/docs/components/accordion): Collapsible accordion component.
+- [Breadcrumb](https://ui.shadcn.com/docs/components/breadcrumb): Breadcrumb navigation component.
+- [Navigation Menu](https://ui.shadcn.com/docs/components/navigation-menu): Accessible navigation menu with dropdowns.
+- [Sidebar](https://ui.shadcn.com/docs/components/sidebar): Collapsible sidebar component for app layouts.
+- [Tabs](https://ui.shadcn.com/docs/components/tabs): Tabbed interface component.
+- [Separator](https://ui.shadcn.com/docs/components/separator): Visual divider between content sections.
+- [Scroll Area](https://ui.shadcn.com/docs/components/scroll-area): Custom scrollable area with styled scrollbars.
+- [Resizable](https://ui.shadcn.com/docs/components/resizable): Resizable panel layout component.
+
+### Overlays & Dialogs
+
+- [Dialog](https://ui.shadcn.com/docs/components/dialog): Modal dialog component.
+- [Alert Dialog](https://ui.shadcn.com/docs/components/alert-dialog): Alert dialog for confirmation prompts.
+- [Sheet](https://ui.shadcn.com/docs/components/sheet): Slide-out panel component (drawer).
+- [Drawer](https://ui.shadcn.com/docs/components/drawer): Mobile-friendly drawer component using Vaul.
+- [Popover](https://ui.shadcn.com/docs/components/popover): Floating popover component.
+- [Tooltip](https://ui.shadcn.com/docs/components/tooltip): Tooltip component for additional context.
+- [Hover Card](https://ui.shadcn.com/docs/components/hover-card): Card that appears on hover.
+- [Context Menu](https://ui.shadcn.com/docs/components/context-menu): Right-click context menu.
+- [Dropdown Menu](https://ui.shadcn.com/docs/components/dropdown-menu): Dropdown menu component.
+- [Menubar](https://ui.shadcn.com/docs/components/menubar): Horizontal menubar component.
+- [Command](https://ui.shadcn.com/docs/components/command): Command palette component (cmdk).
+
+### Feedback & Status
+
+- [Alert](https://ui.shadcn.com/docs/components/alert): Alert component for messages and notifications.
+- [Toast](https://ui.shadcn.com/docs/components/toast): Toast notification component using Sonner.
+- [Progress](https://ui.shadcn.com/docs/components/progress): Progress bar component.
+- [Spinner](https://ui.shadcn.com/docs/components/spinner): Loading spinner component.
+- [Skeleton](https://ui.shadcn.com/docs/components/skeleton): Skeleton loading placeholder.
+- [Badge](https://ui.shadcn.com/docs/components/badge): Badge component for labels and status indicators.
+- [Empty](https://ui.shadcn.com/docs/components/empty): Empty state component for no data scenarios.
+
+### Display & Media
+
+- [Avatar](https://ui.shadcn.com/docs/components/avatar): Avatar component for user profiles.
+- [Card](https://ui.shadcn.com/docs/components/card): Card container component.
+- [Table](https://ui.shadcn.com/docs/components/table): Table component for displaying data.
+- [Data Table](https://ui.shadcn.com/docs/components/data-table): Advanced data table with sorting, filtering, and pagination.
+- [Chart](https://ui.shadcn.com/docs/components/chart): Chart components using Recharts.
+- [Carousel](https://ui.shadcn.com/docs/components/carousel): Carousel component using Embla Carousel.
+- [Aspect Ratio](https://ui.shadcn.com/docs/components/aspect-ratio): Container that maintains aspect ratio.
+- [Typography](https://ui.shadcn.com/docs/components/typography): Typography styles and components.
+- [Item](https://ui.shadcn.com/docs/components/item): Generic item component for lists and menus.
+- [Kbd](https://ui.shadcn.com/docs/components/kbd): Keyboard shortcut display component.
+
+### Misc
+
+- [Collapsible](https://ui.shadcn.com/docs/components/collapsible): Collapsible container component.
+- [Toggle](https://ui.shadcn.com/docs/components/toggle): Toggle button component.
+- [Toggle Group](https://ui.shadcn.com/docs/components/toggle-group): Group of toggle buttons.
+- [Pagination](https://ui.shadcn.com/docs/components/pagination): Pagination component for lists and tables.
+
+## Dark Mode
+
+- [Dark Mode](https://ui.shadcn.com/docs/dark-mode): Overview of dark mode implementation.
+- [Dark Mode - Next.js](https://ui.shadcn.com/docs/dark-mode/next): Dark mode setup for Next.js.
+- [Dark Mode - Vite](https://ui.shadcn.com/docs/dark-mode/vite): Dark mode setup for Vite.
+- [Dark Mode - Astro](https://ui.shadcn.com/docs/dark-mode/astro): Dark mode setup for Astro.
+- [Dark Mode - Remix](https://ui.shadcn.com/docs/dark-mode/remix): Dark mode setup for Remix.
+
+## Forms
+
+- [Forms Overview](https://ui.shadcn.com/docs/forms): Guide to building forms with shadcn/ui.
+- [React Hook Form](https://ui.shadcn.com/docs/forms/react-hook-form): Using shadcn/ui with React Hook Form.
+- [TanStack Form](https://ui.shadcn.com/docs/forms/tanstack-form): Using shadcn/ui with TanStack Form.
+- [Forms - Next.js](https://ui.shadcn.com/docs/forms/next): Building forms in Next.js with Server Actions.
+
+## Advanced
+
+- [Monorepo](https://ui.shadcn.com/docs/monorepo): Using shadcn/ui in a monorepo setup.
+- [React 19](https://ui.shadcn.com/docs/react-19): React 19 support and migration guide.
+- [Tailwind CSS v4](https://ui.shadcn.com/docs/tailwind-v4): Tailwind CSS v4 support and setup.
+- [JavaScript](https://ui.shadcn.com/docs/javascript): Using shadcn/ui with JavaScript (no TypeScript).
+- [Figma](https://ui.shadcn.com/docs/figma): Figma design resources.
+- [v0](https://ui.shadcn.com/docs/v0): Generating UI with v0 by Vercel.
+
+## MCP Server
+
+- [MCP Server](https://ui.shadcn.com/docs/mcp): Model Context Protocol server for AI integrations. Allows AI assistants to browse, search, and install components from registries using natural language. Works with Claude Code, Cursor, VS Code (GitHub Copilot), Codex and more.
+
+## Registry
+
+- [Registry Overview](https://ui.shadcn.com/docs/registry): Creating and publishing your own component registry.
+- [Getting Started](https://ui.shadcn.com/docs/registry/getting-started): Set up your own registry.
+- [Examples](https://ui.shadcn.com/docs/registry/examples): Example registries.
+- [FAQ](https://ui.shadcn.com/docs/registry/faq): Common questions about registries.
+- [Authentication](https://ui.shadcn.com/docs/registry/authentication): Adding authentication to your registry.
+- [Registry MCP](https://ui.shadcn.com/docs/registry/mcp): MCP integration for registries.
+
+### Registry Schemas
+
+- [Registry Schema](https://ui.shadcn.com/schema/registry.json): JSON Schema for registry index files. Defines the structure for a collection of components, hooks, pages, etc. Requires name, homepage, and items array.
+- [Registry Item Schema](https://ui.shadcn.com/schema/registry-item.json): JSON Schema for individual registry items. Defines components, hooks, themes, and other distributable code with properties for dependencies, files, Tailwind config, CSS variables, and more.
+```
+
+## Integration with Project
+
+This project uses:
+- **Next.js 16** with App Router
+- **TypeScript** for type safety
+- **Tailwind CSS v4** for styling
+- **React Server Components** (RSC) enabled
+- **CSS Variables** for theming
+
+Components are installed to `components/ui/` and can be imported using the `@/components/ui` alias.
+
+## Related Rules
+
+- @project-overview - Project structure and technology stack
+- @motion-animations - Animation patterns (can be combined with shadcn/ui components)

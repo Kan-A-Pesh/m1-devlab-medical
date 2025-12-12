@@ -1,0 +1,60 @@
+---
+description: "Guidelines for project file structure, component organization, and co-location"
+alwaysApply: true
+---
+
+# File Structure and Organization Rules
+
+## Overview
+This project follows a strict file structure to ensure scalability, maintainability, and logical separation of concerns.
+
+## Project-Wide Components
+Components that are used across multiple pages or features must be placed in the root `components/` directory.
+
+- **Structure**: Create a subfolder based on the theme or feature name.
+- **Composition**: Break down complex components into smaller parts within that folder.
+
+### Example: Table Component
+If you are creating a reusable table component:
+```
+components/table/
+├── index.tsx       # Main component export
+├── row.tsx         # Table row component
+├── header.tsx      # Table header component
+└── cell.tsx        # Table cell component
+```
+
+## Page-Specific Resources (Co-location)
+Resources that are specific to a single page or route segment should be co-located with that page using underscore-prefixed folders. This applies to components, hooks, libraries, and types.
+
+### Naming Convention
+Use `_folderName` for co-located resources to exclude them from Next.js routing (though App Router already ignores non-page files, this makes the intent explicit and groups them visually).
+
+### Common Co-located Folders
+- `_components`: UI components specific to the page.
+- `_hooks`: Custom hooks used only on the page.
+- `_lib`: Utility functions or logic specific to the page.
+- `_types`: TypeScript definitions specific to the page.
+
+### Code Splitting Rule
+Split code as much as possible while keeping consistency. Large page files should be refactored into smaller components within the `_components` folder.
+
+### Example: Feature Page
+For a page at `app/example/page.tsx`:
+```
+app/example/
+├── page.tsx                           # The main page component
+├── _components/                       # Components specific to this page
+│   ├── header.tsx
+│   └── bento/                         # Sub-structure is allowed and encouraged
+│       └── medical-feature.tsx
+├── _hooks/                            # Hooks specific to this page
+│   └── use-something.ts
+└── _lib/                              # Utils specific to this page
+    └── helpers.ts
+```
+
+## General Guidelines
+1. **Consistency**: Always follow this structure. Do not mix patterns.
+2. **Refactoring**: If a page-specific component becomes useful elsewhere, move it to `components/` and update imports.
+3. **Granularity**: Prefer many small files over few large files.

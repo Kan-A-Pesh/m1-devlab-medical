@@ -1,0 +1,146 @@
+---
+description: "Project overview, architecture, and available tools with external documentation links"
+alwaysApply: true
+---
+
+# DevLab Project Overview
+
+This is a Next.js 16 application for managing medical appointments and employee health records. The project uses TypeScript, Better Auth for authentication, Drizzle ORM for database management, and Tailwind CSS for styling.
+
+## Project Structure
+
+### Core Directories
+
+- **`app/`** - Next.js App Router pages and API routes
+  - `app/api/auth/[...all]/route.ts` - Better Auth API route handler
+  - `app/page.tsx` - Home page
+  - `app/layout.tsx` - Root layout
+  - `app/globals.css` - Global styles
+
+- **`components/`** - React components
+  - `components/ui/` - Reusable UI components (shadcn/ui style)
+    - `button.tsx` - Button component with variants
+
+- **`db/`** - Database schema and configuration
+  - `schema.ts` - Main database schema (medical companies, client companies, employees, bookings, documents)
+  - `auth-schema.ts` - Better Auth generated schema
+  - `index.ts` - Database connection instance
+
+- **`lib/`** - Utility libraries and configurations
+  - `auth.ts` - Better Auth server configuration
+  - `auth-client.ts` - Better Auth client configuration
+  - `utils.ts` - Utility functions (cn helper for className merging)
+
+## Technology Stack
+
+### Core Framework
+- **Next.js 16** - React framework with App Router
+  - Documentation: https://nextjs.org/docs
+  - App Router: https://nextjs.org/docs/app
+
+### Authentication
+- **Better Auth** - Authentication library
+  - Server config: `lib/auth.ts`
+  - Client config: `lib/auth-client.ts`
+  - API route: `app/api/auth/[...all]/route.ts`
+  - Documentation: Use Better Auth MCP tools or search knowledge base
+  - Schema generation: `pnpm auth:generate`
+
+### Database
+- **Drizzle ORM** - Type-safe SQL ORM
+  - Schema files: `db/schema.ts`, `db/auth-schema.ts`
+  - Connection: `db/index.ts`
+  - Config: `drizzle.config.ts`
+  - Documentation: https://orm.drizzle.team/docs/overview
+  - Studio: Runs automatically with `pnpm dev` (drizzle-kit studio)
+  - Migrations: `pnpm db:generate`, `pnpm db:migrate`, `pnpm db:push`
+
+### Database Provider
+- **PostgreSQL** - Database (via Docker)
+  - Docker compose: `docker-compose.yml`
+  - Start: `pnpm db:start`
+  - Stop: `pnpm db:stop`
+  - Connection string: `DATABASE_URL` environment variable
+
+### Styling
+- **Tailwind CSS v4** - Utility-first CSS framework
+  - Config: `tailwind.config.ts`
+  - Global styles: `app/globals.css`
+  - Documentation: https://tailwindcss.com/docs
+  - PostCSS: `postcss.config.mjs`
+
+### UI Components
+- **shadcn/ui** - Component library (Radix UI primitives)
+  - Config: `components.json`
+  - Components: `components/ui/`
+  - Documentation: https://ui.shadcn.com/docs
+
+### Utilities
+- **class-variance-authority** - Component variant management
+- **clsx** & **tailwind-merge** - className utilities
+- **lucide-react** - Icon library
+
+## Available Scripts
+
+- `pnpm dev` - Start development server + Drizzle Studio concurrently
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint
+- `pnpm typecheck` - Type check without emitting files
+- `pnpm auth:generate` - Generate Better Auth schema
+- `pnpm db:generate` - Generate Drizzle migrations
+- `pnpm db:migrate` - Run Drizzle migrations
+- `pnpm db:push` - Push schema changes directly to database
+- `pnpm db:start` - Start PostgreSQL Docker container
+- `pnpm db:stop` - Stop PostgreSQL Docker container
+
+## Database Schema Overview
+
+### Core Entities
+- **medical_companies** - Medical service providers
+- **client_companies** - Companies that use medical services
+- **employees** - Employees linked to users and client companies
+- **membership_requests** - Requests for client companies to join medical companies
+- **bookings** - Medical appointment bookings
+- **documents** - Employee health documents
+
+### Enums
+- `user_role`: admin, medical_staff, company_admin, employee
+- `request_status`: pending, accepted, rejected, dismissed
+- `booking_status`: scheduled, completed, cancelled
+
+## Development Workflow
+
+1. Start database: `pnpm db:start`
+2. Start dev server: `pnpm dev` (includes Drizzle Studio)
+3. Make schema changes in `db/schema.ts`
+4. Generate migrations: `pnpm db:generate`
+5. Apply migrations: `pnpm db:migrate` or `pnpm db:push`
+6. For auth schema changes: `pnpm auth:generate`
+
+## Environment Variables
+
+Required:
+- `DATABASE_URL` - PostgreSQL connection string
+
+## Code Style Guidelines
+
+- Use TypeScript for all files
+- Follow explicit naming conventions (no abbreviations, descriptive names)
+- No comments unless absolutely necessary (code should be self-documenting)
+- Use functional React components
+- Prefer named exports
+- Use Tailwind CSS for styling
+- Follow Next.js App Router conventions
+
+## External Documentation Links
+
+- **Next.js**: https://nextjs.org/docs
+- **Better Auth**: Use Better Auth MCP tools for documentation
+- **Drizzle ORM**: https://orm.drizzle.team/docs/overview
+- **Tailwind CSS**: https://tailwindcss.com/docs
+- **shadcn/ui**: https://ui.shadcn.com/docs
+- **React**: https://react.dev
+- **TypeScript**: https://www.typescriptlang.org/docs
+- **PostgreSQL**: https://www.postgresql.org/docs
+- **Cursor Rules**: https://cursor.com/docs/context/rules
