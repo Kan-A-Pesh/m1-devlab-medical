@@ -21,7 +21,10 @@ import { validatePasswords } from "../../_hooks/use-password-validation";
 export function SignUpContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/onboarding";
+  const redirectTo = searchParams.get("redirect") || "/welcome";
+  const signInHref = redirectTo !== "/welcome"
+    ? `/sign-in?redirect=${encodeURIComponent(redirectTo)}`
+    : "/sign-in";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -124,7 +127,7 @@ export function SignUpContent() {
         <p className="text-slate-600">
           Déjà un compte ?{" "}
           <Link
-            href="/sign-in"
+            href={signInHref}
             className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
           >
             Se connecter

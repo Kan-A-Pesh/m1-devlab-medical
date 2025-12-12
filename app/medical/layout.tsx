@@ -14,7 +14,7 @@ export default function MedicalLayout({
 
   useEffect(() => {
     if (!isPending && !session) {
-      router.push("/medical/register");
+      router.push("/sign-in");
     }
   }, [session, isPending, router]);
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { signIn } from "@/lib/auth-client";
@@ -16,8 +16,14 @@ import {
   AuthSeparator,
 } from "../_components";
 
-export default function SignInPage() {
+function SignInContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/welcome";
+  const signUpHref = redirectTo !== "/welcome"
+    ? `/sign-up?redirect=${encodeURIComponent(redirectTo)}`
+    : "/sign-up";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -32,7 +38,7 @@ export default function SignInPage() {
     const { error } = await signIn.email({
       email,
       password,
-      callbackURL: "/dashboard",
+      callbackURL: redirectTo,
     });
 
     if (error) {
@@ -41,7 +47,7 @@ export default function SignInPage() {
       return;
     }
 
-    router.push("/dashboard");
+    router.push(redirectTo);
   }
 
   return (
@@ -97,7 +103,7 @@ export default function SignInPage() {
         <p className="text-slate-600">
           Pas encore de compte ?{" "}
           <Link
-            href="/sign-up"
+            href={signUpHref}
             className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
           >
             Créer un compte
@@ -105,5 +111,29 @@ export default function SignInPage() {
         </p>
       </motion.div>
     </motion.div>
+  );
+}
+
+function SignInPageSkeleton() {
+  return (
+    <div className="space-y-8 animate-pulse">
+      <div className="space-y-4 text-center lg:text-left">
+        <div className="h-10 bg-slate-200 rounded-lg w-3/4 mx-auto lg:mx-0" />
+        <div className="h-5 bg-slate-200 rounded w-1/2 mx-auto lg:mx-0" />
+      </div>
+      <div className="space-y-5">
+        <div className="h-12 bg-slate-200 rounded-xl" />
+        <div className="h-12 bg-slate-200 rounded-xl" />
+        <div className="h-12 bg-slate-200 rounded-xl" />
+      </div>
+    </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<SignInPageSkeleton />}>
+      <SignInContent />
+    </Suspense>
   );
 }
