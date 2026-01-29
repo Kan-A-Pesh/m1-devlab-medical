@@ -14,7 +14,7 @@ export function ElementTransition({
   children,
   show,
   className,
-  mode = "sync",
+  mode = "wait",
 }: ElementTransitionProps) {
   return (
     <AnimatePresence mode={mode}>
@@ -43,7 +43,7 @@ interface TransitionGroupProps {
   mode?: "wait" | "sync";
 }
 
-export function TransitionGroup({ children, className, mode = "sync" }: TransitionGroupProps) {
+export function TransitionGroup({ children, className, mode = "wait" }: TransitionGroupProps) {
   return (
     <AnimatePresence mode={mode}>
       <motion.div

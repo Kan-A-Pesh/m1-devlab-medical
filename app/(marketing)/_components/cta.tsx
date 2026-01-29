@@ -45,12 +45,12 @@ export function CTA() {
               <p className="text-slate-600 mb-8 leading-relaxed">
                 Trouvez rapidement un médecin du travail, gérez vos adhésions et restez en conformité avec la loi. Simplifiez vos démarches administratives dès aujourd&apos;hui.
               </p>
-              <Link href="/sign-up">
-                <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 group-hover:scale-[1.02] transition-transform">
+              <Button asChild size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 group-hover:scale-[1.02] transition-transform">
+                <Link href="/sign-up">
                   Inscrire mon entreprise
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </motion.div>
 
@@ -73,12 +73,12 @@ export function CTA() {
               <p className="text-emerald-100 mb-8 leading-relaxed">
                 Augmentez votre visibilité, digitalisez la gestion de vos adhésions et facilitez la communication avec vos entreprises adhérentes.
               </p>
-              <Link href="/medical/register">
-                <Button size="lg" variant="secondary" className="w-full bg-white text-emerald-700 hover:bg-emerald-50 shadow-lg group-hover:scale-[1.02] transition-transform">
+              <Button asChild size="lg" variant="secondary" className="w-full bg-white text-emerald-700 hover:bg-emerald-50 shadow-lg group-hover:scale-[1.02] transition-transform">
+                <Link href="/medical/register">
                   Référencer mon service
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </motion.div>
         </div>

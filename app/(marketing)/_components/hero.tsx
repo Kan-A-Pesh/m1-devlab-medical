@@ -47,18 +47,18 @@ export function Hero() {
             variants={verticalFadeIn}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link href="/sign-up">
-              <Button size="lg" className="h-12 px-8 text-base rounded-full shadow-lg shadow-blue-500/20">
+            <Button asChild size="lg" className="h-12 px-8 text-base rounded-full shadow-lg shadow-blue-500/20">
+              <Link href="/sign-up">
                 <Building2 className="mr-2 h-4 w-4" />
                 Inscrire mon entreprise
-              </Button>
-            </Link>
-            <Link href="#features">
-              <Button variant="outline" size="lg" className="h-12 px-8 text-base rounded-full bg-white/50 backdrop-blur-sm hover:bg-white/80 border-slate-200">
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="h-12 px-8 text-base rounded-full bg-white/50 backdrop-blur-sm hover:bg-white/80 border-slate-200">
+              <Link href="#features">
                 Comment ça marche
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </motion.div>
 
           <motion.div

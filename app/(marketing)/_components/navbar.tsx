@@ -37,14 +37,12 @@ export function Navbar() {
       </div>
 
       <div className="flex items-center gap-4">
-        <Link href="/sign-in">
-          <Button variant="ghost" size="sm">
-            Se connecter
-          </Button>
-        </Link>
-        <Link href="/sign-up">
-          <Button size="sm">Créer mon compte</Button>
-        </Link>
+        <Button asChild variant="ghost" size="sm">
+          <Link href="/sign-in">Se connecter</Link>
+        </Button>
+        <Button asChild size="sm">
+          <Link href="/sign-up">Créer mon compte</Link>
+        </Button>
       </div>
     </motion.nav>
   );
